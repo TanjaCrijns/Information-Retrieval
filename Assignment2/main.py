@@ -1,9 +1,10 @@
+__author__      = "Tanja Crijns"
 import pandas as pd, numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
 from scipy import sparse
 
 if __name__ == "__main__":
-    df = pd.read_csv("C:/Hulp/Assignment2/Querylog.csv", sep=';')
+    df = pd.read_csv("D:/Users/Tanja/Documents/Master/Information retrieval/Assignment2/Querylog.csv", sep=';')
     queries = df['Query']
     urls = df['Clicked link']
     uniqueQueries = queries.value_counts()
@@ -29,11 +30,12 @@ if __name__ == "__main__":
     logs = logs[logs['Clicked link'] != '\N']
     queriestmp = topTenQueries.index.tolist()
     URLstmp = URLsTopQueries.values.tolist()
-    # making of matrix
+
+    # Making the matrix
     for index, log in logs.iterrows():
         vectorSpace[queriestmp.index(log['Query'])][URLstmp.index(log['Clicked link'])] += 1
 
-
+    # Cosine calculation
     vectorSpace_sparse = sparse.csr_matrix(vectorSpace)
     np.set_printoptions(suppress=True)
     similarities = cosine_similarity(vectorSpace_sparse)
